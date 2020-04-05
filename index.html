@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+	<title>MLB Player API</title>
+	<style type="text/css">
+	  @media only screen and (max-width: 1080px)
+	  {
+	    html,body {font-size: 125%; margin: 0;}
+	  }
+	  @media only screen and (min-width: 1081px)
+	  {
+	    html,body {font-size: 112%; margin: 0;}
+	  }
+
+	  h1
+	  {
+	    width: 100%;
+	    height: 15%;
+	    top: 0;
+	    background-color: blue;
+	    color: white;
+	    font-size: 300%;
+	    text-align: center;
+	    padding-top: 2%;
+	    margin-bottom: 2%;
+	    margin-left: 0;
+	    margin-top: 0;
+	  }
+
+	  h2
+	  {
+	    width: 100%;
+	    height: 7.5%;
+	    color: blue;
+	    text-decoration: underline;
+	  }
+
+	</style>	
+	<meta charset="utf-8"/>
+	<script>
+		function getHometown() {
+			request = new XMLHttpRequest();
+			// URL for AJAX request
+			request.open("GET", "https://api.sportsdata.io/v3/mlb/scores/json/Players?key=3f4b1bcddd7e40d08b3faac3e2641baf", true);
+ 
+			// Event Handler
+			request.onreadystatechange = function() {
+				if (request.readyState == 4 && request.status == 200) {
+					result = request.responseText;
+					player_data = JSON.parse(result);
+
+					document.getElementById("data").innerHTML = "Aaron Judge's Hometown: " + 
+					player_data[1313].BirthCity + ", " + player_data[1313].BirthState;			
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+
+				}
+				else if (request.readyState == 3) {
+					document.getElementById("data").innerHTML = "Too soon!  Try again";
+				}
+
+			}
+			//HTTP request
+			request.send();
+		}
+	</script>
+</head>
+
+
+<body onload="getHometown()" style="margin-bottom:2% ">
+	<h1>MLB Player Hometowns</h1>
+	<div style="margin-left: 2%">
+		<div id="data">Loading...</div>
+		<h2> API Description </h2>
+		<div id="descrip">
+			The API that I used was a list of all active Major Leage Baseball players, with details on each player's background. This includes information
+			about the position they might play, where they were born, or the college that they attended. It also provides the individual ID of each player
+			from different gambling and fantasy baseball sites. The premium version of this API could also provide accurate statistics for each player.
+		</div>
+		<h2> Website </h2>
+		<div id="site">
+			The website is called sportsdata.io, and provides all different sorts of information and statistics on the 
+			major professional sports leagues in the US. This includes box scores from past games, statistics and background of individual players, 
+			and different types of team data. In particular, I used the site's Major Leage Baseball features to look into the backgrounds of 
+			individual players, for instance, Aaron Judge's hometown. It seems like the site is primarily used for fantasy sports, which makes 
+			heavy use of statistics.			
+		</div>
+		<h2> Options </h2>
+		<div id="options">
+			There were a variety of options to choose from in this API, and I used the BirthCity and BirthState options in my request. Since the players
+			are arranged in a JSON array, I also had to find Aaron Judge's index in the array to get the appropriate hometown. I liked this feature because
+			I think it is interesting to look at the demographic backgrounds of professional athletes and look for trends in that way.		
+		</div>
+		<h2> Helpful Applications </h2>
+		<div id="applications">
+			There are many ways this API could be used as a practical tool. If someone wanted to generate a list of players that played at a particular college,
+			they could easily do so by sorting through the JSON Players object. I think it could also be a useful tool for the management side of baseball teams. If 
+			a GM were looking to acquire a player at a certain position, or a player who is younger than 30, the options in this API could help them narrow down their 
+			search. Basically, this API compiles a bunch of useful information on each player into one place, which makes it a useful tool.		
+		</div>
+	</div>	
+</body>
+</html>
